@@ -4,8 +4,8 @@ import util.RenderingUtilities;
 import util.Vec3;
 import util.Vec4;
 import world.World;
-import world.objects.Cube;
 import world.objects.Object3D;
+import world.objects.Cube;
 import world.objects.Pyramid;
 
 import javax.swing.*;
