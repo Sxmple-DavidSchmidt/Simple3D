@@ -5,7 +5,7 @@ import world.objects.Object3D;
 import java.util.ArrayList;
 
 public class World {
-    private ArrayList<Object3D> objects;
+    private final ArrayList<Object3D> objects;
 
     public World() {
         objects = new ArrayList<>();

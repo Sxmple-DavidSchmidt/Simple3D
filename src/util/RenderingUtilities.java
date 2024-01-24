@@ -4,8 +4,6 @@ import world.objects.Object3D;
 
 public class RenderingUtilities {
     private double aspectRatio;
-    private double theta;
-    private double zFar;
     private double zNear;
     private double cache_revTangent;
     private double cache_revZClipSize;
