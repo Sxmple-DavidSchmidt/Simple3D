@@ -24,19 +24,19 @@ public class RenderingUtilities {
 
     /***
      * Method to transform vertices in world-space such that
-     * the world camera is facing forward from (0, 0, 0)
+     * the world camera is facing forward from (0, 0, 0).
+     * Camera object has yet to be implemented
      * @param vertices - Array of world-space vertices
-     * @param camera - World camera
      * @return Array of transformed vertices
      */
-    public Vec3[] transformToCameraSpace(Vec3[] vertices, Camera camera) {
+    public Vec3[] transformToCameraSpace(Vec3[] vertices) {
         return null;
     }
 
     /***
-     * TODO: document
-     * @param vertex
-     * @return
+     * Method to apply perspective projection
+     * @param vertex - 3D Coordinate in world-space
+     * @return projected 4D coordinate
      */
     public Vec4 applyProjection(Vec3 vertex) {
         // TODO: check vertex data
@@ -51,9 +51,9 @@ public class RenderingUtilities {
     }
 
     /***
-     * TODO: document
-     * @param vertex
-     * @return
+     * Method to apply perspective divide
+     * @param vertex - 4D-coordinate coming from method 'applyProjection'
+     * @return 3D-coordinate with applied perspective divide
      */
     public Vec3 applyPerspectiveDivide(Vec4 vertex) {
         return new Vec3(
@@ -74,15 +74,11 @@ public class RenderingUtilities {
     }
 
     public void updateFieldOfView(double theta_deg) {
-        this.theta = Math.toRadians(theta_deg);
-
-        this.cache_revTangent = 1 / Math.tan(Math.toRadians(theta / 2.0));
+        this.cache_revTangent = 1 / Math.tan(Math.toRadians(Math.toRadians(theta_deg) / 2.0));
     }
 
     public void updateZClipping(double zNear, double zFar) {
         this.zNear = zNear;
-        this.zFar = zFar;
-
         this.cache_revZClipSize = zFar / (zFar - zNear);
     }
 }

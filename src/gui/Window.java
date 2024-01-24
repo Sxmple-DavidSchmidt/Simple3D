@@ -11,11 +11,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Window extends JComponent {
-    private RenderingUtilities ru;
-    private World world;
+    private final World world;
     private final Color vertexColor;
     private final Color wireframeColor;
     private final Color triangleColor;
+    private RenderingUtilities ru;
 
     public Window() {
         world = new World();
@@ -47,7 +47,7 @@ public class Window extends JComponent {
             int[] indexBuffer = object.getIndexBuffer();
 
             for (int i = 0; i < indexBuffer.length; i+= 3) {
-                Vec3 v1 = vertexBuffer[indexBuffer[i + 0]].add(centerOffset);
+                Vec3 v1 = vertexBuffer[indexBuffer[i]].add(centerOffset);
                 Vec3 v2 = vertexBuffer[indexBuffer[i + 1]].add(centerOffset);
                 Vec3 v3 = vertexBuffer[indexBuffer[i + 2]].add(centerOffset);
 
