@@ -6,6 +6,7 @@ import util.Vec4;
 import world.World;
 import world.objects.Cube;
 import world.objects.Object3D;
+import world.objects.Pyramid;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +20,8 @@ public class Window extends JComponent {
 
     public Window() {
         world = new World();
-        world.addObject(new Cube(new Vec3(0, 0, 20), 10));
+        // world.addObject(new Cube(new Vec3(0, 0, 20), 15));
+        world.addObject(new Pyramid(new Vec3(0, 0, 20), 10));
 
         vertexColor = Color.RED;
         wireframeColor = Color.BLACK;
@@ -46,6 +48,14 @@ public class Window extends JComponent {
             Vec3[] vertexBuffer = runRenderingPipeline(object.getVertexBuffer());
             int[] indexBuffer = object.getIndexBuffer();
 
+            g.setColor(vertexColor);
+            for (int i = 0; i < vertexBuffer.length; i++) {
+                vertexBuffer[i].y *= -1;
+                Vec3 v = vertexBuffer[i].add(centerOffset);
+                g.fillOval((int) (v.x - 2), (int) (v.y - 2), 4, 4);
+                g.drawString(String.valueOf(i), (int) v.x, (int) v.y - 10);
+            }
+
             for (int i = 0; i < indexBuffer.length; i+= 3) {
                 Vec3 v1 = vertexBuffer[indexBuffer[i]].add(centerOffset);
                 Vec3 v2 = vertexBuffer[indexBuffer[i + 1]].add(centerOffset);
@@ -63,15 +73,8 @@ public class Window extends JComponent {
                 g.drawLine((int) v2.x, (int) v2.y, (int) v3.x, (int) v3.y);
                 g.drawLine((int) v3.x, (int) v3.y, (int) v1.x, (int) v1.y);
             }
-
-            g.setColor(vertexColor);
-            for (int i = 0; i < vertexBuffer.length; i++) {
-                Vec3 v = vertexBuffer[i].add(centerOffset);
-                g.fillOval((int) (v.x - 2), (int) (v.y - 2), 4, 4);
-                g.drawString(String.valueOf(i), (int) v.x, (int) v.y - 10);
-            }
         }
 
-        g.drawString(String.valueOf((System.currentTimeMillis() % 10000.0) / 10000), (int) centerOffset.x, 10);
+        g.drawString("Animation progress: " + (System.currentTimeMillis() % 10000.0) / 10000, 10, 15);
     }
 }

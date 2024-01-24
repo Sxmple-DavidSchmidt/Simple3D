@@ -3,29 +3,26 @@ package world.objects;
 import util.Transformer;
 import util.Vec3;
 
-public class Cube implements Object3D {
+public class Pyramid implements Object3D {
     private final Vec3[] vertices;
     private Vec3 origin;
     private Vec3 orientation;
 
-    public Cube(Vec3 origin, Vec3 orientation, double size) {
+    public Pyramid(Vec3 origin, Vec3 orientation, double size) {
         this.origin = origin;
         this.orientation = orientation;
 
         double radius = size / 2; // bad name
         this.vertices = new Vec3[] {
-                new Vec3(-radius, -radius, -radius),    // (-1 -1 -1)
-                new Vec3(radius, -radius, -radius),     // (+1 -1 -1)
-                new Vec3(-radius, radius, -radius),     // (-1 +1 -1)
-                new Vec3(radius, radius, -radius),      // (+1 +1 -1)
-                new Vec3(-radius, -radius, radius),     // (-1 -1 +1)
-                new Vec3(radius, -radius, radius),      // (+1 -1 +1)
-                new Vec3(-radius, radius, radius),      // (-1 +1 +1)
-                new Vec3(radius, radius, radius),       // (+1 +1 +1)
+                new Vec3(-radius, -radius, -radius),
+                new Vec3(radius, -radius, -radius),
+                new Vec3(-radius, -radius, radius),
+                new Vec3(radius, -radius, radius),
+                new Vec3(0, radius, 0)
         };
     }
 
-    public Cube(Vec3 origin, double size) {
+    public Pyramid(Vec3 origin, double size) {
         this(origin, new Vec3(0, 0, 0), size);
     }
 
@@ -51,7 +48,7 @@ public class Cube implements Object3D {
 
     @Override
     public Vec3[] getVertexBuffer() {
-        this.orientation.x = (System.currentTimeMillis() % 10000) * (Math.PI / 5000);
+        orientation.y = (System.currentTimeMillis() % 10000) * (Math.PI / 5000);
 
         return new Vec3[] {
                 Transformer.transformLocalSpace(this, vertices[0]),
@@ -59,9 +56,6 @@ public class Cube implements Object3D {
                 Transformer.transformLocalSpace(this, vertices[2]),
                 Transformer.transformLocalSpace(this, vertices[3]),
                 Transformer.transformLocalSpace(this, vertices[4]),
-                Transformer.transformLocalSpace(this, vertices[5]),
-                Transformer.transformLocalSpace(this, vertices[6]),
-                Transformer.transformLocalSpace(this, vertices[7]),
         };
     }
 
@@ -69,17 +63,11 @@ public class Cube implements Object3D {
     public int[] getIndexBuffer() {
         return new int[] {
                 0, 1, 2,
-                1, 2, 3,
-                1, 3, 7,
-                1, 5, 7,
-                4, 5, 7,
-                4, 6, 7,
+                0, 1, 4,
                 0, 2, 4,
-                2, 4, 6,
-                0, 4, 5,
-                0, 1, 5,
-                2, 3, 6,
-                3, 6, 7
+                1, 2, 3,
+                1, 3, 4,
+                2, 3, 4,
         };
     }
 }
