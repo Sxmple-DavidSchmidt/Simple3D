@@ -1,6 +1,5 @@
 package util;
 
-import world.objects.Camera;
 import world.objects.Object3D;
 
 public class RenderingUtilities {
