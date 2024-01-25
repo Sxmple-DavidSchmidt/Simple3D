@@ -4,8 +4,8 @@ import util.RenderingUtilities;
 import util.Vec3;
 import util.Vec4;
 import world.World;
-import world.objects.Object3D;
 import world.objects.Cube;
+import world.objects.Object3D;
 import world.objects.Pyramid;
 
 import javax.swing.*;
@@ -20,8 +20,8 @@ public class Window extends JComponent {
 
     public Window() {
         world = new World();
-        // world.addObject(new Cube(new Vec3(0, 0, 20), 15));
-        world.addObject(new Pyramid(new Vec3(0, 0, 20), 10));
+        world.addObject(new Cube(new Vec3(0, 0, 20), 10));
+        world.addObject(new Pyramid(new Vec3(0, 0, 25), 9));
 
         vertexColor = Color.RED;
         wireframeColor = Color.BLACK;
@@ -38,28 +38,28 @@ public class Window extends JComponent {
 
         return vertexBuffer;
     }
-
+    
     @Override
     public void paintComponent(Graphics g) {
-        ru = new RenderingUtilities(getWidth(), getHeight(), 45, 0, 1200);
-
-        Vec3 centerOffset = new Vec3(getWidth() / 2.0, getHeight() / 2.0, 0);
+        ru = new RenderingUtilities(getWidth(), getHeight(), 45, 1, 1200);
         for (Object3D object: world.getObjects()) {
             Vec3[] vertexBuffer = runRenderingPipeline(object.getVertexBuffer());
             int[] indexBuffer = object.getIndexBuffer();
 
             g.setColor(vertexColor);
             for (int i = 0; i < vertexBuffer.length; i++) {
-                vertexBuffer[i].y *= -1;
-                Vec3 v = vertexBuffer[i].add(centerOffset);
+                Vec3 v = vertexBuffer[i];
+                v.x = v.x * getWidth() / 2.0 + getWidth() / 2.0;
+                v.y = v.y * getHeight() / 2.0 + getHeight() / 2.0;
+
                 g.fillOval((int) (v.x - 2), (int) (v.y - 2), 4, 4);
                 g.drawString(String.valueOf(i), (int) v.x, (int) v.y - 10);
             }
 
             for (int i = 0; i < indexBuffer.length; i+= 3) {
-                Vec3 v1 = vertexBuffer[indexBuffer[i]].add(centerOffset);
-                Vec3 v2 = vertexBuffer[indexBuffer[i + 1]].add(centerOffset);
-                Vec3 v3 = vertexBuffer[indexBuffer[i + 2]].add(centerOffset);
+                Vec3 v1 = vertexBuffer[indexBuffer[i]];
+                Vec3 v2 = vertexBuffer[indexBuffer[i + 1]];
+                Vec3 v3 = vertexBuffer[indexBuffer[i + 2]];
 
                 g.setColor(triangleColor);
                 g.fillPolygon(

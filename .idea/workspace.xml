@@ -7,14 +7,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88b7209e-81ca-4c32-9d08-de2bd34dc3d8" name="Changes" comment="Got basic 3D Rendering working">
-      <change afterPath="$PROJECT_DIR$/src/world/objects/Pyramid.java" afterDir="false" />
+    <list default="true" id="88b7209e-81ca-4c32-9d08-de2bd34dc3d8" name="Changes" comment="Implemented diferent 3D-Projection algorithm">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ressources/jet/lowpolyjet2.blend" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ressources/jet/lowpolyjet2.mtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ressources/jet/lowpolyjet2.obj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/world/objects/BlenderObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/Window.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/util/Transformer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Transformer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/world/objects/Cube.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/world/objects/Cube.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/world/objects/Object3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/world/objects/Object3D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/RenderingUtilities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/RenderingUtilities.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +46,13 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
@@ -60,23 +72,30 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
+    "jdk.selected.JAVA_MODULE": "corretto-21",
     "kotlin-language-version-configured": "true",
-    "run.code.analysis.last.selected.profile": "pProject Default"
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.57931036",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\David Schmidt\Desktop\Projekte\Simple3D\src\ressources\jet" />
+      <recent name="C:\Users\David Schmidt\Desktop\Projekte\Simple3D\src\ressources" />
+    </key>
+  </component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="C:\Program Files\Java\jdk-19" />
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="Simple3D" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Main" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

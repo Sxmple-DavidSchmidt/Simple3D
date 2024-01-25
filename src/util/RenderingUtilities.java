@@ -5,8 +5,8 @@ import world.objects.Object3D;
 public class RenderingUtilities {
     private double aspectRatio;
     private double zNear;
-    private double cache_revTangent;
-    private double cache_revZClipSize;
+    private double zFar;
+    private double theta;
 
     public RenderingUtilities(int width, int height, double theta_deg, double zNear, double zFar) {
         this.updateValues(width, height, theta_deg, zFar, zNear);
@@ -39,14 +39,21 @@ public class RenderingUtilities {
      * @return projected 4D coordinate
      */
     public Vec4 applyProjection(Vec3 vertex) {
-        // TODO: check vertex data
+        /*
+        [2n/(2r), 0, 0, 0]                  [x] = [x * e_1_1 + z * e_1_3]
+        [0, 2n/(2t)), 0, 0]                 [y] = [y * e_2_2 + z * e_2_3)]
+        [0, 0, -(f+n)/(f-n), -2fn/(f-n)]    [z] = [z * e_3_3 + w * e_3_4]
+        [0, 0, -1, 0]                       [1] = [z * e_4_3]
+         */
+
+        double rt = Math.tan(theta / 2.0) * zNear;
 
         // projection
         return new Vec4(
-                vertex.x * aspectRatio * cache_revTangent,
-                vertex.y * cache_revTangent,
-                vertex.z * cache_revZClipSize - zNear * cache_revZClipSize, // (vertex.z - zNear) * revZClipSize?
-                vertex.z
+                vertex.x * ((2 * zNear) / (2 * rt)) * aspectRatio,
+                vertex.y * ((2 * zNear) / (2 * rt)),
+                vertex.z * -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear)),
+                vertex.z * -1
         );
     }
 
@@ -70,15 +77,15 @@ public class RenderingUtilities {
     }
 
     public void updateAspectRatio(int width, int height) {
-        this.aspectRatio = (double) width / (double) height;
+        this.aspectRatio = (double) height / (double) width;
     }
 
     public void updateFieldOfView(double theta_deg) {
-        this.cache_revTangent = 1 / Math.tan(Math.toRadians(Math.toRadians(theta_deg) / 2.0));
+        this.theta = Math.toRadians(theta_deg);
     }
 
     public void updateZClipping(double zNear, double zFar) {
         this.zNear = zNear;
-        this.cache_revZClipSize = zFar / (zFar - zNear);
+        this.zFar = zFar;
     }
 }
