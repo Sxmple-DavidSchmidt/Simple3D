@@ -1,6 +1,6 @@
 package util;
 
-import world.objects.Object3D;
+import world.Camera;
 
 public class RenderingUtilities {
     private double aspectRatio;
@@ -12,33 +12,17 @@ public class RenderingUtilities {
         this.updateValues(width, height, theta_deg, zFar, zNear);
     }
 
-    /***
-     * Method to transform vertices relative to 3D-object
-     * to vertices that are absolute in world-space.
-     * @param object - 3D-object
-     * @return Array of transformed vertices
-     */
-    public Vec3[] transformToWorldSpace(Object3D object) {
-        return null;
+    public Vec3[] transformToCameraSpace(Vec3[] vertices, Camera camera) {
+        Vec3[] rotatedWorldSpaceVertexBuffer = Transformer.rotate(vertices, camera.getOrientation());
+        Vec3[] cameraSpaceVertexBuffer = new Vec3[vertices.length];
+        for (int i = 0; i < vertices.length; i++) {
+            cameraSpaceVertexBuffer[i] = rotatedWorldSpaceVertexBuffer[i].subtract(camera.getPosition());
+        }
+
+        return cameraSpaceVertexBuffer;
     }
 
-    /***
-     * Method to transform vertices in world-space such that
-     * the world camera is facing forward from (0, 0, 0).
-     * Camera object has yet to be implemented
-     * @param vertices - Array of world-space vertices
-     * @return Array of transformed vertices
-     */
-    public Vec3[] transformToCameraSpace(Vec3[] vertices) {
-        return null;
-    }
-
-    /***
-     * Method to apply perspective projection
-     * @param vertex - 3D Coordinate in world-space
-     * @return projected 4D coordinate
-     */
-    public Vec4 applyProjection(Vec3 vertex) {
+    public Vec4[] applyProjection(Vec3[] vertexBuffer) {
         /*
         [2n/(2r), 0, 0, 0]                  [x] = [x * e_1_1 + z * e_1_3]
         [0, 2n/(2t)), 0, 0]                 [y] = [y * e_2_2 + z * e_2_3)]
@@ -48,26 +32,37 @@ public class RenderingUtilities {
 
         double rt = Math.tan(theta / 2.0) * zNear;
 
-        // projection
-        return new Vec4(
-                vertex.x * ((2 * zNear) / (2 * rt)) * aspectRatio,
-                vertex.y * ((2 * zNear) / (2 * rt)),
-                vertex.z * -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear)),
-                vertex.z * -1
-        );
+        double xf = (2 * zNear) / (2 * rt) * aspectRatio;
+        double yf = (2 * zNear) / (2 * rt);
+        double zf = -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear));
+        double wf = -1;
+
+        Vec4[] projectedVertexBuffer = new Vec4[vertexBuffer.length];
+        for (int i = 0; i < vertexBuffer.length; i++) {
+            Vec3 vertex = vertexBuffer[i];
+            projectedVertexBuffer[i] = new Vec4(
+                    vertex.x * xf,
+                    vertex.y * yf,
+                    vertex.z * zf,
+                    vertex.z * wf
+            );
+        }
+
+        return projectedVertexBuffer;
     }
 
-    /***
-     * Method to apply perspective divide
-     * @param vertex - 4D-coordinate coming from method 'applyProjection'
-     * @return 3D-coordinate with applied perspective divide
-     */
-    public Vec3 applyPerspectiveDivide(Vec4 vertex) {
-        return new Vec3(
-                vertex.x / vertex.w,
-                vertex.y / vertex.w,
-                vertex.z / vertex.w
-        );
+    public Vec3[] applyPerspectiveDivide(Vec4[] vertexBuffer) {
+        Vec3[] divideVertexBuffer = new Vec3[vertexBuffer.length];
+        for (int i = 0; i < vertexBuffer.length; i++) {
+            Vec4 vertex = vertexBuffer[i];
+            divideVertexBuffer[i] = new Vec3(
+                    vertex.x / vertex.w,
+                    vertex.y / vertex.w,
+                    vertex.z / vertex.w
+            );
+        }
+
+        return divideVertexBuffer;
     }
 
     public void updateValues(int width, int height, double theta_deg, double zNear, double zFar) {

@@ -8,18 +8,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88b7209e-81ca-4c32-9d08-de2bd34dc3d8" name="Changes" comment="Implemented diferent 3D-Projection algorithm">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ressources/jet/lowpolyjet2.blend" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ressources/jet/lowpolyjet2.mtl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ressources/jet/lowpolyjet2.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/world/objects/BlenderObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/world/Camera.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/world/objects/RenderingMode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/Window.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/util/RenderingUtilities.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/RenderingUtilities.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/Transformer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Transformer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/Vec.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/Vec2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Vec2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/Vec3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Vec3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/Vec4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Vec4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/world/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/world/World.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/world/objects/Cube.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/world/objects/Cube.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/world/objects/Pyramid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/world/objects/Pyramid.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,10 +36,16 @@
       <list>
         <option value="Interface" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MacroExpansionManager">
@@ -65,22 +73,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "jdk.selected.JAVA_MODULE": "corretto-21",
-    "kotlin-language-version-configured": "true",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.57931036",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-21&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.57931036&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\David Schmidt\Desktop\Projekte\Simple3D\src\ressources\jet" />
@@ -137,11 +145,19 @@
       <option name="project" value="LOCAL" />
       <updated>1706107048571</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Implemented diferent 3D-Projection algorithm">
+      <created>1706141546503</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1706141546503</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Got basic 3D Rendering working" />
-    <option name="LAST_COMMIT_MESSAGE" value="Got basic 3D Rendering working" />
+    <MESSAGE value="Implemented diferent 3D-Projection algorithm" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented diferent 3D-Projection algorithm" />
   </component>
 </project>

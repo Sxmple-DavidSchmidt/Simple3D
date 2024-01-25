@@ -1,6 +1,6 @@
 package util;
 
-public class Vec4 implements Vec {
+public class Vec4 {
     public double x;
     public double y;
     public double z;
@@ -13,49 +13,32 @@ public class Vec4 implements Vec {
         this.w = w;
     }
 
-    @Override
     public int size() {
         return 4;
     }
 
-    @Override
     public double length() {
         return Math.sqrt(x * x + y * y + z * z + w * w);
     }
 
-    @Override
-    public Vec normalize() {
+    public Vec4 normalize() {
         return divide(length());
     }
 
-    @Override
-    public Vec divide(double divisor) {
+    public Vec4 divide(double divisor) {
         return new Vec4(x / divisor, y / divisor, z / divisor, w / divisor);
     }
 
-    @Override
-    public Vec scale(double factor) {
+    public Vec4 scale(double factor) {
         return new Vec4(x * factor, y * factor, z * factor, w * factor);
     }
 
-    @Override
-    public Vec add(Vec vec) {
-        if (vec.size() != size()) {
-            throw new RuntimeException("Tried adding vectors with different sizes.");
-        }
-
-        Vec4 cast = (Vec4) vec;
-        return new Vec4(x + cast.x, y + cast.y, z + cast.z, w + cast.w);
+    public Vec4 add(Vec4 vec) {
+        return new Vec4(x + vec.x, y + vec.y, z + vec.z, w + vec.w);
     }
 
-    @Override
-    public Vec4 subtract(Vec vec) {
-        if (vec.size() != size()) {
-            throw new RuntimeException("Tried adding vectors with different sizes.");
-        }
-
-        Vec4 cast = (Vec4) vec;
-        return new Vec4(x - cast.x, y - cast.y, z - cast.z, w - cast.w);
+    public Vec4 subtract(Vec4 vec) {
+        return new Vec4(x - vec.x, y - vec.y, z - vec.z, w - vec.w);
     }
 
     @Override
