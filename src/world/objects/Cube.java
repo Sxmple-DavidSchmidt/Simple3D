@@ -52,17 +52,7 @@ public class Cube implements Object3D {
     @Override
     public Vec3[] getVertexBuffer() {
         this.orientation.x = (System.currentTimeMillis() % 10000) * (Math.PI / 5000);
-
-        return new Vec3[] {
-                Transformer.transformLocalSpace(this, vertices[0]),
-                Transformer.transformLocalSpace(this, vertices[1]),
-                Transformer.transformLocalSpace(this, vertices[2]),
-                Transformer.transformLocalSpace(this, vertices[3]),
-                Transformer.transformLocalSpace(this, vertices[4]),
-                Transformer.transformLocalSpace(this, vertices[5]),
-                Transformer.transformLocalSpace(this, vertices[6]),
-                Transformer.transformLocalSpace(this, vertices[7]),
-        };
+        return Transformer.transformLocalSpace(vertices, this);
     }
 
     @Override

@@ -49,14 +49,7 @@ public class Pyramid implements Object3D {
     @Override
     public Vec3[] getVertexBuffer() {
         orientation.y = (System.currentTimeMillis() % 10000) * (Math.PI / 5000);
-
-        return new Vec3[] {
-                Transformer.transformLocalSpace(this, vertices[0]),
-                Transformer.transformLocalSpace(this, vertices[1]),
-                Transformer.transformLocalSpace(this, vertices[2]),
-                Transformer.transformLocalSpace(this, vertices[3]),
-                Transformer.transformLocalSpace(this, vertices[4]),
-        };
+        return Transformer.transformLocalSpace(vertices, this);
     }
 
     @Override
