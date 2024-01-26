@@ -1,5 +1,6 @@
 package gui;
 
+import util.Int2;
 import util.RenderingUtilities;
 import util.Vec3;
 import util.Vec4;
@@ -34,28 +35,42 @@ public class Window extends JComponent {
         Vec4[] projectedVertexBuffer = ru.applyProjection(cameraSpaceVertexBuffer);
         return ru.applyPerspectiveDivide(projectedVertexBuffer);
     }
+
+    public Int2[] transformToScreenCoordinate(Vec3[] vertexBuffer) {
+        Int2[] screenCoordinateVertexBuffer = new Int2[vertexBuffer.length];
+        double wf = getWidth() / 2.0;
+        double hf = getHeight() / 2.0;
+        for (int i = 0; i < vertexBuffer.length; i++) {
+            screenCoordinateVertexBuffer[i] = new Int2(
+                    (int) (wf + vertexBuffer[i].x * wf),
+                    (int) (hf - vertexBuffer[i].y * hf)
+            );
+        }
+
+        return screenCoordinateVertexBuffer;
+    }
     
     @Override
     public void paintComponent(Graphics g) {
         ru = new RenderingUtilities(getWidth(), getHeight(), 45, 1, 1200);
         for (Object3D object: world.getObjects()) {
-            Vec3[] vertexBuffer = runRenderingPipeline(object.getVertexBuffer(), world.getCamera());
+            Int2[] vertexBuffer;
             int[] indexBuffer = object.getIndexBuffer();
 
-            g.setColor(vertexColor);
-            for (Vec3 v : vertexBuffer) {
-                Vec3 vc = new Vec3(v.x, v.y, v.z);
-                v.x = v.x * getWidth() / 2.0 + getWidth() / 2.0;
-                v.y = v.y * getHeight() / 2.0 + getHeight() / 2.0;
+            Vec3[] worldSpaceVertexBuffer = runRenderingPipeline(object.getVertexBuffer(), world.getCamera());
+            vertexBuffer = transformToScreenCoordinate(worldSpaceVertexBuffer);
 
-                g.fillOval((int) (v.x - 2), (int) (v.y - 2), 4, 4);
-                g.drawString(vc.toString(), (int) v.x, (int) v.y - 10);
+            g.setColor(vertexColor);
+            for (int i = 0; i < vertexBuffer.length; i++) {
+                Int2 v = vertexBuffer[i];
+                g.fillOval(v.x - 2, v.y - 2, 4, 4);
+                g.drawString(worldSpaceVertexBuffer[i].toString(), v.x, v.y - 10);
             }
 
             for (int i = 0; i < indexBuffer.length; i+= 3) {
-                Vec3 v1 = vertexBuffer[indexBuffer[i]];
-                Vec3 v2 = vertexBuffer[indexBuffer[i + 1]];
-                Vec3 v3 = vertexBuffer[indexBuffer[i + 2]];
+                Int2 v1 = vertexBuffer[indexBuffer[i]];
+                Int2 v2 = vertexBuffer[indexBuffer[i + 1]];
+                Int2 v3 = vertexBuffer[indexBuffer[i + 2]];
 
                 g.setColor(triangleColor);
                 g.fillPolygon(
