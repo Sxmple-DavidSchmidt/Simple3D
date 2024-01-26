@@ -12,14 +12,13 @@ public class RenderingUtilities {
         this.updateValues(width, height, theta_deg, zFar, zNear);
     }
 
-    public Vec3[] transformToCameraSpace(Vec3[] vertices, Camera camera) {
-        Vec3[] rotatedWorldSpaceVertexBuffer = Transformer.rotate(vertices, camera.getOrientation());
-        Vec3[] cameraSpaceVertexBuffer = new Vec3[vertices.length];
-        for (int i = 0; i < vertices.length; i++) {
-            cameraSpaceVertexBuffer[i] = rotatedWorldSpaceVertexBuffer[i].subtract(camera.getPosition());
+    public Vec3[] transformToCameraSpace(Vec3[] vertexBuffer, Camera camera) {
+        Vec3[] positionTransformedVertexBuffer = new Vec3[vertexBuffer.length];
+        for (int i = 0; i < vertexBuffer.length; i++) {
+            positionTransformedVertexBuffer[i] = vertexBuffer[i].subtract(camera.getPosition());
         }
 
-        return cameraSpaceVertexBuffer;
+        return Transformer.rotate(positionTransformedVertexBuffer, camera.getOrientation());
     }
 
     public Vec4[] applyProjection(Vec3[] vertexBuffer) {

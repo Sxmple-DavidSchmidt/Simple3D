@@ -40,6 +40,6 @@ public class Vec3 {
     }
 
     public String toString() {
-        return "Vec3: (" + Math.round(x * 100) / 100 + ", " + Math.round(y * 100) / 100 + ", " + Math.round(z * 100) / 100 + ")";
+        return "Vec3: (" + Math.round(x * 100.0) / 100.0 + ", " + Math.round(y * 100.0) / 100.0 + ", " + Math.round(z * 100.0) / 100.0 + ")";
     }
  }
