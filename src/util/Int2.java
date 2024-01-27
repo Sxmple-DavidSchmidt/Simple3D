@@ -8,4 +8,8 @@ public class Int2 {
         this.x = x;
         this.y = y;
     }
+
+    public String toString() {
+        return "Int2: " + x + ", " + y;
+    }
 }
