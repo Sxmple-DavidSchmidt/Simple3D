@@ -1,14 +1,10 @@
 package gui;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class UserInterface {
-    private JFrame frame;
-    private Window window;
-    private ControlPanel controlPanel;
+    private final JFrame frame;
 
     public UserInterface() {
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -19,13 +15,16 @@ public class UserInterface {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        window = new Window();
+        Window window = new Window();
         window.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        controlPanel = new ControlPanel();
-
         frame.add(window, BorderLayout.CENTER);
+
+        ControlPanel controlPanel = new ControlPanel();
         frame.add(controlPanel, BorderLayout.WEST);
+
         frame.setVisible(true);
+
+        Controller.window = window;
 
         new Thread(() -> {
             while (true) {

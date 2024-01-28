@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class ControlPanel extends JPanel {
     public ControlPanel() {
-        setLayout(new GridLayout(6, 0));
+        setLayout(new GridLayout(7, 0));
 
         JSlider px = new JSlider(-50, 50, (int) Controller.CAMERA_POSITION_X);
         px.setPaintLabels(true);

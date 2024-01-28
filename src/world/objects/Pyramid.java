@@ -4,7 +4,7 @@ import util.Transformer;
 import util.Vec3;
 
 public class Pyramid implements Object3D {
-    private final Vec3[] vertices;
+    private final Triangle[] triangles;
     private Vec3 origin;
     private Vec3 orientation;
 
@@ -13,12 +13,19 @@ public class Pyramid implements Object3D {
         this.orientation = orientation;
 
         double radius = size / 2; // bad name
-        this.vertices = new Vec3[] {
-                new Vec3(-radius, -radius, -radius),
-                new Vec3(radius, -radius, -radius),
-                new Vec3(-radius, -radius, radius),
-                new Vec3(radius, -radius, radius),
-                new Vec3(0, radius, 0)
+        Vec3 v0 = new Vec3(-radius, -radius, -radius);
+        Vec3 v1 = new Vec3(radius, -radius, -radius);
+        Vec3 v2 = new Vec3(-radius, -radius, radius);
+        Vec3 v3 = new Vec3(radius, -radius, radius);
+        Vec3 v4 = new Vec3(0, radius, 0);
+
+        triangles = new Triangle[] {
+                new Triangle(v0, v1, v2),
+                new Triangle(v0, v1, v4),
+                new Triangle(v0, v2, v4),
+                new Triangle(v1, v2, v3),
+                new Triangle(v1, v3, v4),
+                new Triangle(v2, v3, v4)
         };
     }
 
@@ -43,23 +50,12 @@ public class Pyramid implements Object3D {
 
     @Override
     public Vec3 getOrientation() {
+        orientation.y = (System.currentTimeMillis() % 5000) / 5000.0;
         return orientation;
     }
 
     @Override
-    public Vec3[] getVertexBuffer() {
-        return Transformer.transformLocalSpace(vertices, this);
-    }
-
-    @Override
-    public int[] getIndexBuffer() {
-        return new int[] {
-                0, 1, 2,
-                0, 1, 4,
-                0, 2, 4,
-                1, 2, 3,
-                1, 3, 4,
-                2, 3, 4,
-        };
+    public Triangle[] getTriangles() {
+        return Transformer.transformLocalSpace(triangles, this);
     }
 }
