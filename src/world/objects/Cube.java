@@ -4,7 +4,7 @@ import util.Transformer;
 import util.Vec3;
 
 public class Cube implements Object3D {
-    private final Vec3[] vertices;
+    private final Triangle[] triangles;
     private Vec3 origin;
     private Vec3 orientation;
 
@@ -13,15 +13,27 @@ public class Cube implements Object3D {
         this.orientation = orientation;
 
         double radius = size / 2; // bad name
-        this.vertices = new Vec3[] {
-                new Vec3(-radius, -radius, -radius),    // (-1 -1 -1)
-                new Vec3(radius, -radius, -radius),     // (+1 -1 -1)
-                new Vec3(-radius, radius, -radius),     // (-1 +1 -1)
-                new Vec3(radius, radius, -radius),      // (+1 +1 -1)
-                new Vec3(-radius, -radius, radius),     // (-1 -1 +1)
-                new Vec3(radius, -radius, radius),      // (+1 -1 +1)
-                new Vec3(-radius, radius, radius),      // (-1 +1 +1)
-                new Vec3(radius, radius, radius),       // (+1 +1 +1)
+        Vec3 v0 = new Vec3(-radius, -radius, -radius);  // (-1 -1 -1)
+        Vec3 v1 = new Vec3(radius, -radius, -radius);   // (+1 -1 -1)
+        Vec3 v2 = new Vec3(-radius, radius, -radius);   // (-1 +1 -1)
+        Vec3 v3 = new Vec3(radius, radius, -radius);    // (+1 +1 -1)
+        Vec3 v4 = new Vec3(-radius, -radius, radius);   // (-1 -1 +1)
+        Vec3 v5 = new Vec3(radius, -radius, radius);    // (+1 -1 +1)
+        Vec3 v6 = new Vec3(-radius, radius, radius);    // (-1 +1 +1)
+        Vec3 v7 = new Vec3(radius, radius, radius);     // (+1 +1 +1)
+
+        triangles = new Triangle[] {
+                new Triangle(v0, v1, v2),
+                new Triangle(v1, v2, v3),
+                new Triangle(v1, v3, v7),
+                new Triangle(v1, v5, v7),
+                new Triangle(v4, v5, v7),
+                new Triangle(v4, v6, v7),
+                new Triangle(v0, v2, v4),
+                new Triangle(v2, v4, v6),
+                new Triangle(v0, v4, v5),
+                new Triangle(v0, v1, v5),
+                new Triangle(v3, v6, v7)
         };
     }
 
@@ -50,26 +62,7 @@ public class Cube implements Object3D {
     }
 
     @Override
-    public Vec3[] getVertexBuffer() {
-        this.orientation.x = (System.currentTimeMillis() % 5000.0) / 5000.0;
-        return Transformer.transformLocalSpace(vertices, this);
-    }
-
-    @Override
-    public int[] getIndexBuffer() {
-        return new int[] {
-                0, 1, 2,
-                1, 2, 3,
-                1, 3, 7,
-                1, 5, 7,
-                4, 5, 7,
-                4, 6, 7,
-                0, 2, 4,
-                2, 4, 6,
-                0, 4, 5,
-                0, 1, 5,
-                2, 3, 6,
-                3, 6, 7
-        };
+    public Triangle[] getTriangles() {
+        return Transformer.transformLocalSpace(triangles, this);
     }
 }

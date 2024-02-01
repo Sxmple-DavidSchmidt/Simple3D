@@ -7,6 +7,5 @@ public interface Object3D {
     Vec3 getOrigin();
     void setOrientation(Vec3 orientation);
     Vec3 getOrientation();
-    Vec3[] getVertexBuffer();
-    int[] getIndexBuffer();
+    Triangle[] getTriangles();
 }

@@ -7,4 +7,6 @@ public class Controller {
     public static double CAMERA_ORIENTATION_X;
     public static double CAMERA_ORIENTATION_Y;
     public static double CAMERA_ORIENTATION_Z;
+
+    public static Window window;
 }
