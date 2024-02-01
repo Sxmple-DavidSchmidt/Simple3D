@@ -2,7 +2,7 @@ package world.objects;
 
 import util.Vec3;
 
-public class Triangle {
+public class Triangle implements Object3D {
     Vec3[] vertices;
 
     public Triangle(Vec3[] vertices) {
@@ -17,6 +17,27 @@ public class Triangle {
 
     public Vec3[] getVertices() {
         return vertices;
+    }
+
+    @Override
+    public void setOrigin(Vec3 origin) {}
+
+    @Override
+    public Vec3 getOrigin() {
+        return new Vec3(0, 0, 0);
+    }
+
+    @Override
+    public void setOrientation(Vec3 orientation) {}
+
+    @Override
+    public Vec3 getOrientation() {
+        return new Vec3(0, 0, 0);
+    }
+
+    @Override
+    public Triangle[] getTriangles() {
+        return new Triangle[] {this};
     }
 }
 

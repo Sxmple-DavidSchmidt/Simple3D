@@ -6,13 +6,21 @@ import world.objects.Triangle;
 import java.util.ArrayList;
 
 public class RenderingUtilities {
-    // private double[] precomputed_values; // TODO: optimize
+    // indices:
+    // 0: Math.tan(theta / 2.0) * zNear
+    // 1: (2 * zNear) / (2 * [0]) * aspectRatio
+    // 2: (2 * zNear) / (2 * [0])
+    // 3: -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear))
+    // 4: -1
+    private double[] precomputed_values;
     private double aspectRatio;
     private double zNear;
     private double zFar;
     private double theta;
 
     public RenderingUtilities(int width, int height, double theta_deg, double zNear, double zFar) {
+        precomputed_values = new double[4];
+        precomputed_values[3] = -1;
         this.updateValues(width, height, theta_deg, zNear, zFar);
     }
 
@@ -45,40 +53,27 @@ public class RenderingUtilities {
             }
         }
 
-        System.out.println(triangles.toArray(new Triangle[0]).length);
         return triangles.toArray(new Triangle[0]);
     }
 
     public Vec4[] applyProjection(Vec3[] vertexBuffer) {
         /*
-        [2n/(2r), 0, 0, 0]                  [x] = [x * e_1_1 + z * e_1_3]
-        [0, 2n/(2t)), 0, 0]                 [y] = [y * e_2_2 + z * e_2_3)]
-        [0, 0, -(f+n)/(f-n), -2fn/(f-n)]    [z] = [z * e_3_3 + w * e_3_4]
-        [0, 0, -1, 0]                       [1] = [z * e_4_3]
-
-        TODO: optimize
-        precomputed_values = [
-            0: Math.tan(theta / 2.0) * zNear
-            1: (2 * zNear) / (2 * rt) * aspectRatio
-            2: (2 * zNear) / (2 * rt)
-            3: -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear))
-            4: -1
-        ]*/
-
+        Unoptimized:
         double rt = Math.tan(theta / 2.0) * zNear;
         double xf = (2 * zNear) / (2 * rt) * aspectRatio;
         double yf = (2 * zNear) / (2 * rt);
         double zf = -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear));
         double wf = -1;
+        */
 
         Vec4[] projectedVertexBuffer = new Vec4[vertexBuffer.length];
         for (int i = 0; i < vertexBuffer.length; i++) {
             Vec3 vertex = vertexBuffer[i];
             projectedVertexBuffer[i] = new Vec4(
-                    vertex.x * xf,
-                    vertex.y * yf,
-                    vertex.z * zf,
-                    vertex.z * wf
+                    vertex.x * precomputed_values[0],
+                    vertex.y * precomputed_values[1],
+                    vertex.z * precomputed_values[2],
+                    vertex.z * precomputed_values[3]
             );
         }
 
@@ -86,24 +81,19 @@ public class RenderingUtilities {
     }
 
     public Vec4[][] applyClipping(Vec4[] vertexBuffer) {
-        ArrayList<Vec4[]> triangles = new ArrayList<>(1);
+        // TODO: Implement substitution triangles
+        if (getClipCode(vertexBuffer[0]) + getClipCode(vertexBuffer[1]) + getClipCode(vertexBuffer[2]) != 0)
+            return new Vec4[0][0];
+        return new Vec4[][] {vertexBuffer};
+    }
 
-        Vec4[] clippedVertices = new Vec4[vertexBuffer.length];
-        for (int i = 0; i < vertexBuffer.length; i++) {
-            boolean doClip = false;
-            Vec4 vertex = vertexBuffer[i];
-            if (vertex.w < zNear) doClip = true;
-            if (Math.abs(vertex.x) > vertex.w) doClip = true;
-            if (Math.abs(vertex.y) > vertex.w) doClip = true;
-
-            if(doClip)
-                clippedVertices[i] = new Vec4(0, 0, 0, 1); // TODO: replace
-            else
-                clippedVertices[i] = vertex;
-        }
-
-        triangles.add(clippedVertices);
-        return triangles.toArray(new Vec4[0][3]);
+    private int getClipCode(Vec4 v) {
+        int clipCode = 0;
+        if (-v.x > v.w) clipCode += 1;
+        if (v.x > v.w) clipCode += 2;
+        if (-v.y > v.w) clipCode += 4;
+        if (v.y > v.w) clipCode += 8;
+        return clipCode;
     }
 
     public Vec3[] applyPerspectiveDivide(Vec4[] vertexBuffer) {
@@ -132,10 +122,21 @@ public class RenderingUtilities {
 
     public void updateFieldOfView(double theta_deg) {
         this.theta = Math.toRadians(theta_deg);
+
+        // Update precomputed values
+        double tmp = Math.tan(theta / 2.0) * zNear;
+        precomputed_values[0] = (2 * zNear) / (2 * tmp) * aspectRatio;
+        precomputed_values[1] = (2 * zNear) / (2 * tmp);
     }
 
     public void updateZClipping(double zNear, double zFar) {
         this.zNear = zNear;
         this.zFar = zFar;
+
+        // Update precomputed values
+        double tmp = Math.tan(theta / 2.0) * zNear;
+        precomputed_values[0] = (2 * zNear) / (2 * tmp) * aspectRatio;
+        precomputed_values[1] = (2 * zNear) / (2 * tmp);
+        precomputed_values[2] = -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear));
     }
 }
