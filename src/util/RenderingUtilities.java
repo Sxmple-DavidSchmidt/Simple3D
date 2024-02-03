@@ -73,8 +73,7 @@ public class RenderingUtilities {
                     vertex.x * precomputed_values[0],
                     vertex.y * precomputed_values[1],
                     vertex.z * precomputed_values[2],
-                    vertex.z * precomputed_values[3]
-            );
+                    vertex.z * precomputed_values[3]);
         }
 
         return projectedVertexBuffer;

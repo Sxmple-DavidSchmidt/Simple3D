@@ -50,7 +50,6 @@ public class Pyramid implements Object3D {
 
     @Override
     public Vec3 getOrientation() {
-        orientation.y = (System.currentTimeMillis() % 5000) / 5000.0;
         return orientation;
     }
 

@@ -1,8 +1,10 @@
 package gui;
 
+import gui.components.ControlPanel;
+import gui.components.SelectionPanel;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserInterface {
     private final JFrame frame;
@@ -17,19 +19,23 @@ public class UserInterface {
         frame.setLayout(new BorderLayout());
 
         Window window = new Window();
-        window.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        // window.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        Controller.window = window;
         frame.add(window, BorderLayout.CENTER);
 
         ControlPanel controlPanel = new ControlPanel();
         frame.add(controlPanel, BorderLayout.WEST);
 
-        frame.setVisible(true);
+        SelectionPanel selectionPanel = new SelectionPanel();
+        selectionPanel.setWorld(Controller.world);
+        frame.add(selectionPanel, BorderLayout.EAST);
 
-        Controller.window = window;
+        frame.setVisible(true);
 
         new Thread(() -> {
             while (true) {
                 frame.repaint();
+                window.update(1);
                 try {
                     Thread.sleep(15);
                 } catch (InterruptedException ex) {

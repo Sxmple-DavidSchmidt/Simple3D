@@ -3,29 +3,57 @@ package gui;
 import util.Int2;
 import util.RenderingUtilities;
 import util.Vec3;
+import world.Camera;
+import world.KeyboardInputListener;
+import world.Updatetable;
 import world.World;
 import world.objects.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
-public class Window extends JComponent {
+public class Window extends JComponent implements Updatetable {
     private final World world;
+    private final Camera camera;
+    private final ArrayList<KeyboardInputListener> inputListeners;
+
     private final Color vertexColor;
     private final Color wireframeColor;
-    private final Color triangleColor;
+    private Color triangleColor;
 
     public Window() {
-        world = new World();
-        world.addObject(new Cube(new Vec3(0, 0, 0), 5));
-        world.addObject(new Pyramid(new Vec3(0, 0, 0), 9));
+        world = Controller.world;
+        camera = world.getCamera();
+        inputListeners = new ArrayList<>();
+        inputListeners.add(camera);
 
         vertexColor = Color.RED;
         wireframeColor = Color.BLACK;
-        triangleColor = new Color(0, 0, 0, 0.05f);
+        triangleColor = new Color(0, 0.5f, 0, 0.1f);
+
+        setFocusable(true);
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                handleKeyPress(e.getKeyCode());
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                handleKeyRelease(e.getKeyCode());
+            }
+        });
     }
 
     public Int2[] transformToScreenCoordinate(Vec3[] vertexBuffer) {
+        // System.out.println(getKeyListeners().length);
+
         Int2[] screenCoordinateVertexBuffer = new Int2[vertexBuffer.length];
         double wf = getWidth() / 2.0;
         double hf = getHeight() / 2.0;
@@ -39,37 +67,70 @@ public class Window extends JComponent {
         return screenCoordinateVertexBuffer;
     }
 
-    public long render() {
-        long startTime = System.nanoTime();
-        this.repaint();
-        long endTime = System.nanoTime();
-        return (endTime - startTime);
+    private void renderObject(Graphics g, Object3D object, RenderingUtilities ru, Color fillColor) {
+        Triangle[] triangles = ru.runTransformationPipeline(object.getTriangles(), world.getCamera());
+        for (Triangle triangle: triangles) {
+            Int2[] screenCoordinates = transformToScreenCoordinate(triangle.getVertices());
+            Int2 v1 = screenCoordinates[0];
+            Int2 v2 = screenCoordinates[1];
+            Int2 v3 = screenCoordinates[2];
+
+            g.setColor(fillColor);
+            g.fillPolygon(
+                    new int[] {v1.x, v2.x, v3.x},
+                    new int[] {v1.y, v2.y, v3.y},
+                    3
+            );
+
+            g.setColor(wireframeColor);
+            g.drawLine(v1.x, v1.y, v2.x, v2.y);
+            g.drawLine(v2.x, v2.y, v3.x, v3.y);
+            g.drawLine(v3.x, v3.y, v1.x, v1.y);
+        }
     }
     
     @Override
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         RenderingUtilities ru = new RenderingUtilities(getWidth(), getHeight(), 45, 1, 100);
 
-        for (Object3D object: world.getObjects()) {
-            Triangle[] triangles = ru.runTransformationPipeline(object.getTriangles(), world.getCamera());
-            for (Triangle triangle: triangles) {
-                Int2[] screenCoordinates = transformToScreenCoordinate(triangle.getVertices());
-                Int2 v1 = screenCoordinates[0];
-                Int2 v2 = screenCoordinates[1];
-                Int2 v3 = screenCoordinates[2];
+        Triangle[] triangles = ru.runTransformationPipeline(new Orientation().getTriangles(), world.getCamera());
+        for (Triangle triangle: triangles) {
+            Int2[] screenCoordinates = transformToScreenCoordinate(triangle.getVertices());
+            Int2 v1 = screenCoordinates[0];
+            Int2 v2 = screenCoordinates[1];
+            Int2 v3 = screenCoordinates[2];
 
-                g.setColor(triangleColor);
-                g.fillPolygon(
-                        new int[] {v1.x, v2.x, v3.x},
-                        new int[] {v1.y, v2.y, v3.y},
-                        3
-                );
+            g.setColor(new Color(0f, 0f, 0f, 0.01f));
+            g.fillPolygon(
+                    new int[] {v1.x, v2.x, v3.x},
+                    new int[] {v1.y, v2.y, v3.y},
+                    3
+            );
 
-                g.setColor(wireframeColor);
-                g.drawLine(v1.x, v1.y, v2.x, v2.y);
-                g.drawLine(v2.x, v2.y, v3.x, v3.y);
-                g.drawLine(v3.x, v3.y, v1.x, v1.y);
-            }
+            g.setColor(wireframeColor);
+            g.drawLine(v1.x, v1.y, v2.x, v2.y);
+            g.drawLine(v2.x, v2.y, v3.x, v3.y);
+            g.drawLine(v3.x, v3.y, v1.x, v1.y);
         }
+
+        for (Object3D object: world.getObjects())
+            renderObject(g, object, ru, triangleColor);
     }
+
+    public void handleKeyPress(int keyCode) {
+        System.out.println("PRESSING " + keyCode);
+        camera.handleKeyPress(keyCode);
+    }
+
+    public void handleKeyRelease(int keyCode) {
+        System.out.println("RELEASING " + keyCode);
+        camera.handleKeyRelease(keyCode);
+    }
+
+    @Override
+    public void update(double delta) {
+        this.camera.update(delta);
+    }
+
 }
