@@ -1,6 +1,6 @@
 package util;
 
-import world.Camera;
+import world.objects.Camera;
 import world.objects.Triangle;
 
 import java.util.ArrayList;
@@ -12,10 +12,9 @@ public class RenderingUtilities {
     // 2: (2 * zNear) / (2 * [0])
     // 3: -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear))
     // 4: -1
-    private double[] precomputed_values;
+    private final double[] precomputed_values;
     private double aspectRatio;
     private double zNear;
-    private double zFar;
     private double theta;
 
     public RenderingUtilities(int width, int height, double theta_deg, double zNear, double zFar) {
@@ -60,8 +59,8 @@ public class RenderingUtilities {
         /*
         Unoptimized:
         double rt = Math.tan(theta / 2.0) * zNear;
-        double xf = (2 * zNear) / (2 * rt) * aspectRatio;
-        double yf = (2 * zNear) / (2 * rt);
+        double xf = (2 * zNear) / (2 * Math.tan(theta / 2.0) * zNear) * aspectRatio;
+        double yf = (2 * zNear) / (2 * Math.tan(theta / 2.0) * zNear);
         double zf = -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear));
         double wf = -1;
         */
@@ -130,12 +129,17 @@ public class RenderingUtilities {
 
     public void updateZClipping(double zNear, double zFar) {
         this.zNear = zNear;
-        this.zFar = zFar;
 
         // Update precomputed values
         double tmp = Math.tan(theta / 2.0) * zNear;
         precomputed_values[0] = (2 * zNear) / (2 * tmp) * aspectRatio;
         precomputed_values[1] = (2 * zNear) / (2 * tmp);
         precomputed_values[2] = -(zFar + zNear) / (zFar - zNear) + -2 * ((zFar * zNear) / (zFar - zNear));
+    }
+
+    public static void main(String[] args) {
+        RenderingUtilities ru = new RenderingUtilities(1000, 1000, 45, 1, 1000);
+        Vec4[] vertexBuffer = ru.applyProjection(new Vec3[] {new Vec3(1, 1, 2)});
+        System.out.println(vertexBuffer[0]);
     }
 }

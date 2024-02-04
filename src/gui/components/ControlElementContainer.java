@@ -1,17 +1,14 @@
 package gui.components;
 
-import world.objects.Object3D;
-
 import javax.swing.*;
-import java.awt.*;
 
-public abstract class ControlElementContainer extends JPanel {
-    protected Object3D object;
+public abstract class ControlElementContainer<TargetType> extends JPanel {
+    protected TargetType target;
 
     public abstract void registerUpdate(int id, double value);
-    public void update () {};
-    public void setObject(Object3D object) {
-        this.object = object;
+    public void update () {}
+    public void setTarget(TargetType target) {
+        this.target = target;
         this.update();
     }
 }

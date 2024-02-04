@@ -10,24 +10,23 @@ public class UserInterface {
     private final JFrame frame;
 
     public UserInterface() {
+        Window window = new Window();
+        ControlPanel controlPanel = new ControlPanel();
+        SelectionPanel selectionPanel = new SelectionPanel();
+
+        window.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        Controller.window = window;
+        selectionPanel.setWorld(Controller.world);
+
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         frame = new JFrame();
         frame.setTitle("3D-Project");
         frame.setSize(d.width / 2, d.height / 2);
         frame.setLocation(d.width / 4, d.height / 4);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-
-        Window window = new Window();
-        // window.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        Controller.window = window;
-        frame.add(window, BorderLayout.CENTER);
-
-        ControlPanel controlPanel = new ControlPanel();
+        frame.setLayout(new BorderLayout(10, 10));
         frame.add(controlPanel, BorderLayout.WEST);
-
-        SelectionPanel selectionPanel = new SelectionPanel();
-        selectionPanel.setWorld(Controller.world);
+        frame.add(window, BorderLayout.CENTER);
         frame.add(selectionPanel, BorderLayout.EAST);
 
         frame.setVisible(true);
@@ -35,7 +34,6 @@ public class UserInterface {
         new Thread(() -> {
             while (true) {
                 frame.repaint();
-                window.update(1);
                 try {
                     Thread.sleep(15);
                 } catch (InterruptedException ex) {
