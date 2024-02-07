@@ -7,6 +7,7 @@ public class Cube implements Object3D {
     private final Triangle[] triangles;
     private final Vec3 origin;
     private final Vec3 orientation;
+    private double size;
 
     public Cube(Vec3 origin, Vec3 orientation, double size) {
         this.origin = origin;
@@ -35,15 +36,17 @@ public class Cube implements Object3D {
                 new Triangle(v0, v1, v5),
                 new Triangle(v3, v6, v7)
         };
+
+        this.size = size;
     }
 
-    public Cube(Vec3 origin, double size) {
-        this(origin, new Vec3(0, 0, 0), size);
+    public Cube(Vec3 origin) {
+        this(origin, new Vec3(0, 0, 0), 1);
     }
 
     @Override
     public double getSize() {
-        return 1;
+        return size;
     }
 
     @Override

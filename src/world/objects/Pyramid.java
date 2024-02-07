@@ -29,8 +29,8 @@ public class Pyramid implements Object3D {
         };
     }
 
-    public Pyramid(Vec3 origin, double size) {
-        this(origin, new Vec3(0, 0, 0), size);
+    public Pyramid(Vec3 origin) {
+        this(origin, new Vec3(0, 0, 0), 1);
     }
 
     @Override
