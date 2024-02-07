@@ -20,15 +20,14 @@ public class Triangle implements Object3D {
     }
 
     @Override
-    public void setOrigin(Vec3 origin) {}
+    public double getSize() {
+        return 1;
+    }
 
     @Override
     public Vec3 getOrigin() {
         return new Vec3(0, 0, 0);
     }
-
-    @Override
-    public void setOrientation(Vec3 orientation) {}
 
     @Override
     public Vec3 getOrientation() {

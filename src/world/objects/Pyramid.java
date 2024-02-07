@@ -5,8 +5,8 @@ import util.Vec3;
 
 public class Pyramid implements Object3D {
     private final Triangle[] triangles;
-    private Vec3 origin;
-    private Vec3 orientation;
+    private final Vec3 origin;
+    private final Vec3 orientation;
 
     public Pyramid(Vec3 origin, Vec3 orientation, double size) {
         this.origin = origin;
@@ -34,18 +34,13 @@ public class Pyramid implements Object3D {
     }
 
     @Override
-    public void setOrigin(Vec3 origin) {
-        this.origin = origin;
+    public double getSize() {
+        return 1;
     }
 
     @Override
     public Vec3 getOrigin() {
         return origin;
-    }
-
-    @Override
-    public void setOrientation(Vec3 orientation) {
-        this.orientation = orientation;
     }
 
     @Override

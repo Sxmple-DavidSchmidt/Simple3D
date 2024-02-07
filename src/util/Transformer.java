@@ -13,9 +13,9 @@ public class Transformer {
         for (int i = 0; i < rotatedWorldSpaceTriangles.length; i++) {
             Vec3[] vertices = rotatedWorldSpaceTriangles[i].getVertices();
             localSpaceTriangles[i] = new Triangle(
-                    vertices[0].add(origin),
-                    vertices[1].add(origin),
-                    vertices[2].add(origin)
+                    vertices[0].scale(object.getSize()).add(origin),
+                    vertices[1].scale(object.getSize()).add(origin),
+                    vertices[2].scale(object.getSize()).add(origin)
             );
         }
 
