@@ -1,27 +1,27 @@
 package world.objects;
 
-import util.Transformer;
 import util.Vec3;
+import world.Triangle;
 
-public class Cube implements Object3D {
-    private final Triangle[] triangles;
-    private final Vec3 origin;
-    private final Vec3 orientation;
-    private double size;
-
+public class Cube extends Object3DAdapter {
     public Cube(Vec3 origin, Vec3 orientation, double size) {
-        this.origin = origin;
-        this.orientation = orientation;
+        super(origin, orientation, size);
+    }
 
-        double radius = size / 2; // bad name
-        Vec3 v0 = new Vec3(-radius, -radius, -radius);  // (-1 -1 -1)
-        Vec3 v1 = new Vec3(radius, -radius, -radius);   // (+1 -1 -1)
-        Vec3 v2 = new Vec3(-radius, radius, -radius);   // (-1 +1 -1)
-        Vec3 v3 = new Vec3(radius, radius, -radius);    // (+1 +1 -1)
-        Vec3 v4 = new Vec3(-radius, -radius, radius);   // (-1 -1 +1)
-        Vec3 v5 = new Vec3(radius, -radius, radius);    // (+1 -1 +1)
-        Vec3 v6 = new Vec3(-radius, radius, radius);    // (-1 +1 +1)
-        Vec3 v7 = new Vec3(radius, radius, radius);     // (+1 +1 +1)
+    public Cube() {
+        super();
+    }
+
+    @Override
+    protected void buildTriangles() {
+        Vec3 v0 = new Vec3(-1, -1, -1);  // (-1 -1 -1)
+        Vec3 v1 = new Vec3(1, -1, -1);   // (+1 -1 -1)
+        Vec3 v2 = new Vec3(-1, 1, -1);   // (-1 +1 -1)
+        Vec3 v3 = new Vec3(1, 1, -1);    // (+1 +1 -1)
+        Vec3 v4 = new Vec3(-1, -1, 1);   // (-1 -1 +1)
+        Vec3 v5 = new Vec3(1, -1, 1);    // (+1 -1 +1)
+        Vec3 v6 = new Vec3(-1, 1, 1);    // (-1 +1 +1)
+        Vec3 v7 = new Vec3(1, 1, 1);     // (+1 +1 +1)
 
         triangles = new Triangle[] {
                 new Triangle(v0, v1, v2),
@@ -36,32 +36,5 @@ public class Cube implements Object3D {
                 new Triangle(v0, v1, v5),
                 new Triangle(v3, v6, v7)
         };
-
-        this.size = size;
-    }
-
-    public Cube(Vec3 origin) {
-        this(origin, new Vec3(0, 0, 0), 1);
-    }
-
-    @Override
-    public double getSize() {
-        return size;
-    }
-
-    @Override
-    public Vec3 getOrigin() {
-        return origin;
-    }
-
-
-    @Override
-    public Vec3 getOrientation() {
-        return orientation;
-    }
-
-    @Override
-    public Triangle[] getTriangles() {
-        return Transformer.transformLocalSpace(triangles, this);
     }
 }

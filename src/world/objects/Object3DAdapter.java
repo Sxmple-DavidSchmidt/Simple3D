@@ -1,27 +1,29 @@
 package world.objects;
 
-import util.ObjUtilities;
 import util.Transformer;
 import util.Vec3;
 import world.Triangle;
 
-import java.io.InputStream;
+public class Object3DAdapter implements Object3D {
+    protected Triangle[] triangles;
+    protected Vec3 origin;
+    protected Vec3 orientation;
+    protected double size;
 
-public class ObjObject implements Object3D {
-    private final Triangle[] triangles;
-    private final Vec3 origin;
-    private final Vec3 orientation;
-    private double size;
-
-    public ObjObject(InputStream objInputStream, Vec3 origin, Vec3 orientation, double size) {
+    public Object3DAdapter(Vec3 origin, Vec3 orientation, double size) {
         this.origin = origin;
         this.orientation = orientation;
         this.size = size;
-        this.triangles = ObjUtilities.triangles(objInputStream);
+
+        buildTriangles();
     }
 
-    public ObjObject(InputStream objInputStream) {
-        this(objInputStream, new Vec3(0, 0, 0), new Vec3(0,0 ,0), 1);
+    public Object3DAdapter() {
+        this(new Vec3(0, 0, 0), new Vec3(0, 0, 0), 1);
+    }
+
+    protected void buildTriangles() {
+        triangles = new Triangle[0];
     }
 
     @Override

@@ -1,6 +1,7 @@
 package world.objects;
 
 import util.Vec3;
+import world.Triangle;
 
 public interface Object3D {
     double getSize();

@@ -11,22 +11,6 @@ public class Vec3 {
         this.z = z;
     }
 
-    public int size() {
-        return 3;
-    }
-
-    public double length() {
-        return Math.sqrt(x * x + y * y + z * z);
-    }
-
-    public Vec3 normalize() {
-        return divide(length());
-    }
-
-    public Vec3 divide(double divisor) {
-        return new Vec3(x / divisor, y / divisor, z / divisor);
-    }
-
     public Vec3 scale(double factor) {
         return new Vec3(x * factor, y * factor, z * factor);
     }

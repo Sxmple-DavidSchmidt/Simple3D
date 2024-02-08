@@ -3,6 +3,7 @@ package gui;
 import util.Int2;
 import util.RenderingUtilities;
 import util.Vec3;
+import world.Triangle;
 import world.World;
 import world.objects.*;
 

@@ -1,7 +1,6 @@
 package world;
 
 import util.Vec3;
-import world.objects.Camera;
 import world.objects.Object3D;
 
 import java.util.ArrayList;

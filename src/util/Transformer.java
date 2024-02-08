@@ -1,7 +1,7 @@
 package util;
 
 import world.objects.Object3D;
-import world.objects.Triangle;
+import world.Triangle;
 
 public class Transformer {
     public static Triangle[] transformLocalSpace(Triangle[] triangles, Object3D object) {

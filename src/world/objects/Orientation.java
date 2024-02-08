@@ -1,13 +1,13 @@
 package world.objects;
 
 import util.Vec3;
+import world.Triangle;
 
 import java.util.ArrayList;
 
-public class Orientation implements Object3D {
-    private final Triangle[] triangles;
-
-    public Orientation() {
+public class Orientation extends Object3DAdapter {
+    @Override
+    protected void buildTriangles() {
         ArrayList<Triangle> triangleArrayList = new ArrayList<>();
 
         int increment = 5;
@@ -25,25 +25,5 @@ public class Orientation implements Object3D {
         }
 
         triangles = triangleArrayList.toArray(new Triangle[0]);
-    }
-
-    @Override
-    public double getSize() {
-        return 1;
-    }
-
-    @Override
-    public Vec3 getOrigin() {
-        return new Vec3(0, 0, 0);
-    }
-
-    @Override
-    public Vec3 getOrientation() {
-        return new Vec3(0, 0, 0);
-    }
-
-    @Override
-    public Triangle[] getTriangles() {
-        return triangles;
     }
 }

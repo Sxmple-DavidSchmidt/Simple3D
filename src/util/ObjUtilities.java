@@ -1,21 +1,20 @@
 package util;
 
 import com.mokiat.data.front.parser.*;
-import world.objects.Triangle;
+import world.Triangle;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ObjUtilities {
-    public static Triangle[] triangles (String objPath){
+    public static Triangle[] triangles (InputStream fileInputStream){
         OBJModel model;
+        IOBJParser parser = new OBJParser();
 
-        try (InputStream in = new FileInputStream(objPath)) {
-            IOBJParser parser = new OBJParser();
-            model = parser.parse(in);
+        try {
+            model = parser.parse(fileInputStream);
         } catch (IOException e) {
             return new Triangle[0];
         }

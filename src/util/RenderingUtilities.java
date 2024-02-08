@@ -1,7 +1,7 @@
 package util;
 
-import world.objects.Camera;
-import world.objects.Triangle;
+import world.Camera;
+import world.Triangle;
 
 import java.util.ArrayList;
 

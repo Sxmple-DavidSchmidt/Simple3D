@@ -1,7 +1,7 @@
 package gui.components;
 
 import util.Vec3;
-import world.objects.Camera;
+import world.Camera;
 
 import javax.swing.*;
 import java.awt.*;
